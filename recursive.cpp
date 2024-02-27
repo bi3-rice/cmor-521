@@ -144,10 +144,29 @@ double * strassen(double* A, double* B, int cur_n){
     double * M5 = strassen(S6, B22, cur_n/2);
     double * M6 = strassen(S7, S8, cur_n/2);
     double * M7 = strassen(S9, S10, cur_n/2);
+    delete[] S1;
+    delete[] S2;
+    delete[] S3;
+    delete[] S4;
+    delete[] S5;
+    delete[] S6;
+    delete[] S7;
+    delete[] S8;
+    delete[] S9;
+    delete[] S10;
+    
+    delete[] A11;
+    delete[] A12;
+    delete[] A21;
+    delete[] A22;
 
+    delete[] B11;
+    delete[] B12;
+    delete[] B21;
+    delete[] B22;
+    
     double * C = new double[cur_n * cur_n];
 
-    
     for(int i = 0; i < cur_n/2; i++){
       for(int j = 0; j < cur_n/2; j++){
 	// C00
@@ -159,7 +178,15 @@ double * strassen(double* A, double* B, int cur_n){
 	// C11
 	C[(i+cur_n/2)*cur_n + j + cur_n/2] = M1[i*cur_n/2 + j] - M2[i*cur_n/2 + j] + M3[i*cur_n/2 + j] + M6[i*cur_n/2 + j];
       }
-    } 
+    }
+    delete[] M1;
+    delete[] M2;
+    delete[] M3;
+    delete[] M4;
+    delete[] M5;
+    delete[] M6;
+    delete[] M7;
+    
     return C;
   }  
 }

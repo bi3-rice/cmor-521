@@ -5,9 +5,6 @@
 using namespace std;
 using namespace std::chrono;
 
-#define BLOCK_SIZE 64
-
-// computes C = C + A*B
 void recur_2x2(double* C, double* A, double* B, const int bl_sz,
 	       int CR_s, int CR_e, int CC_s, int CC_e,
 	       int AR_s, int AR_e, int AC_s, int AC_e,
@@ -188,6 +185,15 @@ double * strassen(double* A, double* B, int cur_n){
 	C[(i+cur_n/2)*cur_n + j + cur_n/2] = M1[i*cur_n/2 + j] - M2[i*cur_n/2 + j] + M3[i*cur_n/2 + j] + M6[i*cur_n/2 + j];
       }
     }
+    
+    delete[] M1;
+    delete[] M2;
+    delete[] M3;
+    delete[] M4;
+    delete[] M5;
+    delete[] M6;
+    delete[] M7;
+    
     return C;
   }
 }
@@ -278,11 +284,6 @@ int main(){
       double * B = new double[n * n];
       double * C = new double[n * n];
 
-      for (int i = 0; i < n*n; i++){
-        A[i] = 0.0;
-	B[i] = 0.0;
-	C[i] = 0.0;
-      }
       // make A, B = I
       for (int i = 0; i < n; ++i){
 	A[i + i * n] = 1.0;
@@ -322,17 +323,12 @@ int main(){
   for(int k = 4; k < 11; k++){
     cout << endl;
     int n = pow(2,k);
-    cout << "Matrix size n = " << n << endl;
+    cout << "----- Matrix size n = " << n << " -----" << endl;
   
     double * A = new double[n * n];
     double * B = new double[n * n];
     double * C = new double[n * n];
 
-    for (int i = 0; i < n*n; i++){
-        A[i] = 0.0;
-	B[i] = 0.0;
-	C[i] = 0.0;
-    }
     // make A, B = I
     for (int i = 0; i < n; ++i){
       A[i + i * n] = 1.0;

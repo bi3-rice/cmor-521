@@ -17,7 +17,9 @@ void recur_2x2(double* C, double* A, double* B, const int bl_sz,
       int A_j = AC_s;
       int B_j = BC_s;
       for(int j = CC_s; j < CC_e; j++){
-	C[i*n + j] = C[i*n + j] + A[A_i*n + A_j]*B[B_i*n + B_j];
+	for(int k = 0; k < cur_n; k++){
+	  C[i*n + j] += A[A_i*n + A_j + k]*B[(B_i+k)*n + B_j];
+	}
 	A_j += 1;
 	B_j += 1;
       }

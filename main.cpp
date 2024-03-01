@@ -171,7 +171,6 @@ double * strassen(double* A, double* B, int cur_n){
     delete[] B22;
 
     double * C = new double[cur_n * cur_n];
-
     
     for(int i = 0; i < cur_n/2; i++){
       for(int j = 0; j < cur_n/2; j++){
@@ -272,8 +271,8 @@ int main(){
   
   int num_trials = 5;
   
-  for(int k = 2; k < 6; k++){
-    int bl_sz = pow(2,k);
+  for(int p = 2; p < 6; p++){
+    int bl_sz = pow(2,p);
     cout << "----- BLOCK SIZE = " << bl_sz << " -----" << endl;
     for(int j = 5; j < 11; j++){
       cout << endl;
@@ -284,12 +283,17 @@ int main(){
       double * B = new double[n * n];
       double * C = new double[n * n];
 
+      for(int i = 0; i < n*n; i++){
+        A[i] = 0.0;
+        B[i] = 0.0;
+        C[i] = 0.0;
+      }
+
       // make A, B = I
       for (int i = 0; i < n; ++i){
 	A[i + i * n] = 1.0;
 	B[i + i * n] = 1.0;
       }
-      
     
       // Measure performance
       high_resolution_clock::time_point start = high_resolution_clock::now();
@@ -320,21 +324,26 @@ int main(){
   cout << "###         Question 2, Part 2         ###" << endl;
   cout << "### Naive vs. Blocked (Block_size = 8) ###" << endl;
   cout << "##########################################" << endl;
-  for(int k = 4; k < 11; k++){
+  for(int p = 4; p < 11; p++){
     cout << endl;
-    int n = pow(2,k);
+    int n = pow(2,p);
     cout << "----- Matrix size n = " << n << " -----" << endl;
   
     double * A = new double[n * n];
     double * B = new double[n * n];
     double * C = new double[n * n];
 
+    for(int i = 0; i < n*n; i++){
+      A[i] = 0.0;
+      B[i] = 0.0;
+      C[i] = 0.0;
+    }
+
     // make A, B = I
     for (int i = 0; i < n; ++i){
       A[i + i * n] = 1.0;
       B[i + i * n] = 1.0;
     }
-      
     
     // Measure performance
     high_resolution_clock::time_point start = high_resolution_clock::now();
@@ -392,8 +401,8 @@ int main(){
   cout << "##########################" << endl;
   cout << endl;
 
-  for(int h = 1; h < 11; h++){
-    int n = pow(2,h);
+  for(int p = 1; p < 11; p++){
+    int n = pow(2,p);
   
     double * A = new double[n * n];
     double * B = new double[n * n];

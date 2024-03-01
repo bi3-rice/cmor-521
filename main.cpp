@@ -278,6 +278,11 @@ int main(){
       double * B = new double[n * n];
       double * C = new double[n * n];
 
+      for (int i = 0; i < n*n; i++){
+        A[i] = 0.0;
+	B[i] = 0.0;
+	C[i] = 0.0;
+      }
       // make A, B = I
       for (int i = 0; i < n; ++i){
 	A[i + i * n] = 1.0;
@@ -323,6 +328,11 @@ int main(){
     double * B = new double[n * n];
     double * C = new double[n * n];
 
+    for (int i = 0; i < n*n; i++){
+        A[i] = 0.0;
+	B[i] = 0.0;
+	C[i] = 0.0;
+    }
     // make A, B = I
     for (int i = 0; i < n; ++i){
       A[i + i * n] = 1.0;

@@ -188,11 +188,8 @@ double * strassen(double* A, double* B, int cur_n){
 	C[(i+cur_n/2)*cur_n + j + cur_n/2] = M1[i*cur_n/2 + j] - M2[i*cur_n/2 + j] + M3[i*cur_n/2 + j] + M6[i*cur_n/2 + j];
       }
     }
-    
     return C;
   }
-
-  
 }
 
 void matmul_naive(const int n, double* C, double* A, double* B){
@@ -230,11 +227,28 @@ void matmul_blocked(const int n, const int bl_sz, double* C, double* A, double* 
   }
 }
 
-//int main(int argc, char * argv[]){
-int main(){
+bool check_equal(double * C, double * A, double * B, const int n){
+  bool equal = true;
+  for(int i = 0; i < n; i++){
+    for(int j = 0; j < n; j++){
+      if(i == j){
+	if(abs(C[i*n + j] - 1) > 1e-10){
+	  return false;
+	  break;
+	}
+      }
+      else{
+	if(abs(C[i*n + j]) > 1e-10){
+	  return false;
+	  break;
+	}
+      }
+    }
+  }
+  return true;
+}
 
-  /*
-    //int n = atoi(argv[1]);
+int main(){
 
   ////////////////
   // Question 2 //
@@ -244,11 +258,17 @@ int main(){
   // Part 1 //
   ////////////
   
+  cout << "##########################" << endl;
+  cout << "### Question 2, Part 1 ###" << endl;
+  cout << "### Block Size Timings ###" << endl;
+  cout << "##########################" << endl;
+  cout << endl;
+  
   int num_trials = 5;
   
   for(int k = 2; k < 6; k++){
     int bl_sz = pow(2,k);
-    cout << "##### BLOCK SIZE = " << bl_sz << " #####" << endl;
+    cout << "----- BLOCK SIZE = " << bl_sz << " -----" << endl;
     for(int j = 5; j < 11; j++){
       cout << endl;
       int n = pow(2,j);
@@ -291,6 +311,7 @@ int main(){
 
   int bl_sz = 8;
   cout << "##########################################" << endl;
+  cout << "###         Question 2, Part 2         ###" << endl;
   cout << "### Naive vs. Blocked (Block_size = 8) ###" << endl;
   cout << "##########################################" << endl;
   for(int k = 4; k < 11; k++){
@@ -339,7 +360,6 @@ int main(){
     delete[] C;
   }
   cout << endl;
-  */
   
   
   ////////////////
@@ -349,114 +369,97 @@ int main(){
   ////////////
   // Part 1 //
   ////////////
-  // see recur_2x2
+  cout << "##########################" << endl;
+  cout << "### Question 3, Part 1 ###" << endl;
+  cout << "##########################" << endl;
+  cout << endl;
+  cout << "See code implementation" << endl;
+  cout << endl;
+  
 
   ////////////
   // Part 2 //
   ////////////
+  cout << "##########################" << endl;
+  cout << "### Question 3, Part 2 ###" << endl;
+  cout << "###   Checking C = I   ###" << endl;
+  cout << "##########################" << endl;
+  cout << endl;
 
-  int bl_sz = 8;
-  for(int j = 3; j < 6; j++){
-    int n = pow(2,j);
-  
-    //double * A = new double[n * n];
-    double * B = new double[n * n];
-    double * C = new double[n * n];
-
-    for(int i = 0; i < n*n; i++){
-      B[i] = 0.0;
-      C[i] = 0.0;
-    }
-    // make A, B = I
-    for (int i = 0; i < n; ++i){
-      //A[i + i * n] = 1.0;
-      B[i + i * n] = 1.0;
-    }
-    
-    recur_2x2(C, B, B, bl_sz,
-	      0, n, 0, n,
-	      0, n, 0, n,
-	      0, n, 0, n, n, n);
-
-    /*
-    bool equal = true;
-    cout << "Beginning value: " << equal << endl;
-    for(int i = 0; i < n*n; i++){
-      if(i % n == 0.0){
-	if(C[i] != 1){
-	  equal = false;
-	  break;
-	}
-      }
-      else{
-	if(C[i] != 0){
-	  equal = false;
-	  break;
-	}
-      }
-    }
-    cout << "C = I is " << equal << endl;
-    */
-
-    cout << "Matrix C, size n = " << n << endl;
-    for(int i = 0; i < n; i++){
-      cout << "[";
-      for(int k = 0; k < n; k++){
-	cout << C[i*n + k] << ", ";
-      }
-      cout << "]" << endl;
-    }
-
-    /*
-    cout << "Matrix A, size n = " << n << endl;
-    for(int i = 0; i < n; i++){
-      cout << "[";
-      for(int k = 0; k < n; k++){
-	cout << A[i*n + k] << ", ";
-      }
-      cout << "]" << endl;
-    }
-    */
-
-    cout << "Matrix B, size n = " << n << endl;
-    for(int i = 0; i < n; i++){
-      cout << "[";
-      for(int k = 0; k < n; k++){
-	cout << B[i*n + k] << ", ";
-      }
-      cout << "]" << endl;
-    }
-    
-    //delete[] A;
-    delete[] B;
-    delete[] C;
-    cout << endl;
-  }
-
-  /*
-  for(int i = 4; i < 11; i++){
-    int n = pow(2,i);
-
-    cout << "Matrix size n = " << n << ", block size = " << BLOCK_SIZE << endl;
+  for(int h = 1; h < 11; h++){
+    int n = pow(2,h);
   
     double * A = new double[n * n];
     double * B = new double[n * n];
     double * C = new double[n * n];
 
+    for(int i = 0; i < n*n; i++){
+      A[i] = 0.0;
+      B[i] = 0.0;
+      C[i] = 0.0;
+    }
     // make A, B = I
     for (int i = 0; i < n; ++i){
       A[i + i * n] = 1.0;
       B[i + i * n] = 1.0;
     }
+    
+    recur_2x2(C, A, B, bl_sz,
+	      0, n, 0, n,
+	      0, n, 0, n,
+	      0, n, 0, n, n, n);
+
+    bool equal = check_equal(C,A,B,n);
+    if(equal)
+      cout << "Matrix C, size n = " << n << ", is equal to I" << endl;
+    else
+      cout << "Matrix C, size n = " << n << ", is not equal to I" << endl;
+
+    cout << endl;
+    delete[] A;
+    delete[] B;
+    delete[] C;
+  }
+
+  ////////////
+  // Part 3 //
+  ////////////
+
+  cout << "############################" << endl;
+  cout << "###  Question 3, Part 3  ###" << endl;
+  cout << "###   Recursion timing   ###" << endl;
+  cout << "############################" << endl;
+  cout << endl;
+  
+  for(int p = 4; p < 11; p++){
+    int n = pow(2,p);
+
+    cout << "----- Matrix size n = " << n << " -----" << endl;
+    cout << "----- Block size n = " << bl_sz << "  -----" << endl;
+  
+    double * A = new double[n * n];
+    double * B = new double[n * n];
+    double * C = new double[n * n];
+    for(int i = 0; i < n*n; i++){
+      A[i] = 0.0;
+      B[i] = 0.0;
+      C[i] = 0.0;
+    }
+    for(int i = 0; i < n; i++){
+      A[i + i * n] = 1.0;
+      B[i + i * n] = 1.0;
+    }
     int num_trials = 5;
     
-    // Measure performance
+    ///////////////
+    // Recursion //
+    ///////////////
     high_resolution_clock::time_point start = high_resolution_clock::now();
     for (int i = 0; i < num_trials; ++i){
       for (int j = 0; i < n * n; ++i){
 	C[j] = 0.0;
       }
-      recur_2x2(C, A, B,
+      recur_2x2(C, A, B, bl_sz,
 		0, n, 0, n,
 		0, n, 0, n,
 		0, n, 0, n, n, n);
@@ -464,35 +467,62 @@ int main(){
     high_resolution_clock::time_point end = high_resolution_clock::now();
     duration<double> elapsed_naive = (end - start) / num_trials;
     
-    double sum_C = 0.0;
-    for (int i = 0; i < n * n; ++i){
-      sum_C += C[i];
-    }
-    cout << "Recur_2x2 sum_C = " << sum_C << endl;
     cout << "Recur_2x2 elapsed time (ms) = " << elapsed_naive.count() * 1000 << endl;
+    cout << endl;
     
-    start = high_resolution_clock::now();
+    delete[] A;
+    delete[] B;
+    delete[] C;  
+  }
+
+  //////////////////
+  // Extra credit //
+  //////////////////
+  
+  cout << "####################" << endl;
+  cout << "### Extra Credit ###" << endl;
+  cout << "###   Strassen   ###" << endl;
+  cout << "####################" << endl;
+  cout << endl;
+  
+  for(int p = 4; p < 11; p++){
+    int n = pow(2,p);
+
+    cout << "----- Matrix size n = " << n << " -----" << endl;
+  
+    double * A = new double[n * n];
+    double * B = new double[n * n];
+    double * C = new double[n * n];
+    for(int i = 0; i < n*n; i++){
+      A[i] = 0.0;
+      B[i] = 0.0;
+      C[i] = 0.0;
+    }
+    for(int i = 0; i < n; i++){
+      A[i + i * n] = 1.0;
+      B[i + i * n] = 1.0;
+    }
+    int num_trials = 5;
+
+    //////////////
+    // Strassen //
+    //////////////
+    high_resolution_clock::time_point start = high_resolution_clock::now();
     for (int i = 0; i < num_trials; ++i){
       for (int j = 0; i < n * n; ++i){
 	C[j] = 0.0;
       }
       C = strassen(A, B, n);
     }
-    end = high_resolution_clock::now();
+    high_resolution_clock::time_point end = high_resolution_clock::now();
     duration<double> elapsed_strass = (end - start) / num_trials;
     
-    sum_C = 0.0;
-    for (int i = 0; i < n * n; ++i){
-      sum_C += C[i];
-    }
-    cout << "Strassen_2x2 sum_C = " << sum_C << endl;
     cout << "Strassen elapsed time (ms) = " << elapsed_strass.count() * 1000 << endl;
+    cout << endl;
     
     delete[] A;
     delete[] B;
     delete[] C;  
-    }*/
-  
-  
+  }
   return 0;
 }

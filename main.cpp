@@ -170,7 +170,6 @@ double * strassen(double* A, double* B, int cur_n){
     delete[] B22;
 
     double * C = new double[cur_n * cur_n];
-
     
     for(int i = 0; i < cur_n/2; i++){
       for(int j = 0; j < cur_n/2; j++){
@@ -184,6 +183,14 @@ double * strassen(double* A, double* B, int cur_n){
 	C[(i+cur_n/2)*cur_n + j + cur_n/2] = M1[i*cur_n/2 + j] - M2[i*cur_n/2 + j] + M3[i*cur_n/2 + j] + M6[i*cur_n/2 + j];
       }
     }
+    delete[] M1;
+    delete[] M2;
+    delete[] M3;
+    delete[] M4;
+    delete[] M5;
+    delete[] M6;
+    delete[] M7;
+	  
     return C;
   }
 }
@@ -311,11 +318,11 @@ int main(){
   // Part 2 //
   ////////////
 
-  int bl_sz = 8;
-  cout << "##########################################" << endl;
-  cout << "###         Question 2, Part 2         ###" << endl;
-  cout << "### Naive vs. Blocked (Block_size = 8) ###" << endl;
-  cout << "##########################################" << endl;
+  int bl_sz = 16;
+  cout << "###########################################" << endl;
+  cout << "###         Question 2, Part 2          ###" << endl;
+  cout << "### Naive vs. Blocked (Block_size = 16) ###" << endl;
+  cout << "###########################################" << endl;
   for(int k = 4; k < 11; k++){
     cout << endl;
     int n = pow(2,k);

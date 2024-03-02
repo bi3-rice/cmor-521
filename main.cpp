@@ -5,6 +5,7 @@
 using namespace std;
 using namespace std::chrono;
 
+// computes C = C + A*B
 void recur_2x2(double* C, double* A, double* B, const int bl_sz,
 	       int CR_s, int CR_e, int CC_s, int CC_e,
 	       int AR_s, int AR_e, int AC_s, int AC_e,
@@ -12,19 +13,15 @@ void recur_2x2(double* C, double* A, double* B, const int bl_sz,
 	       const int n, const int cur_n){
   if (cur_n < bl_sz){
     int A_i = AR_s;
-    int B_i = BR_s;
     for(int i = CR_s; i < CR_e; i++){
-      int A_j = AC_s;
       int B_j = BC_s;
       for(int j = CC_s; j < CC_e; j++){
 	for(int k = 0; k < cur_n; k++){
-	  C[i*n + j] += A[A_i*n + A_j + k]*B[(B_i+k)*n + B_j];
+	  C[i*n + j] += A[A_i*n + AC_s + k]*B[(BR_s+k)*n + B_j];
 	}
-	A_j += 1;
 	B_j += 1;
       }
       A_i += 1;
-      B_i += 1;
     }
   }
   else{
@@ -173,6 +170,7 @@ double * strassen(double* A, double* B, int cur_n){
     delete[] B22;
 
     double * C = new double[cur_n * cur_n];
+
     
     for(int i = 0; i < cur_n/2; i++){
       for(int j = 0; j < cur_n/2; j++){
@@ -186,15 +184,6 @@ double * strassen(double* A, double* B, int cur_n){
 	C[(i+cur_n/2)*cur_n + j + cur_n/2] = M1[i*cur_n/2 + j] - M2[i*cur_n/2 + j] + M3[i*cur_n/2 + j] + M6[i*cur_n/2 + j];
       }
     }
-    
-    delete[] M1;
-    delete[] M2;
-    delete[] M3;
-    delete[] M4;
-    delete[] M5;
-    delete[] M6;
-    delete[] M7;
-    
     return C;
   }
 }
@@ -257,6 +246,7 @@ bool check_equal(double * C, double * A, double * B, const int n){
 
 int main(){
 
+  
   ////////////////
   // Question 2 //
   ////////////////
@@ -273,8 +263,8 @@ int main(){
   
   int num_trials = 5;
   
-  for(int p = 2; p < 6; p++){
-    int bl_sz = pow(2,p);
+  for(int k = 2; k < 6; k++){
+    int bl_sz = pow(2,k);
     cout << "----- BLOCK SIZE = " << bl_sz << " -----" << endl;
     for(int j = 5; j < 11; j++){
       cout << endl;
@@ -285,17 +275,12 @@ int main(){
       double * B = new double[n * n];
       double * C = new double[n * n];
 
-      for(int i = 0; i < n*n; i++){
-        A[i] = 0.0;
-        B[i] = 0.0;
-        C[i] = 0.0;
-      }
-
       // make A, B = I
       for (int i = 0; i < n; ++i){
 	A[i + i * n] = 1.0;
 	B[i + i * n] = 1.0;
       }
+      
     
       // Measure performance
       high_resolution_clock::time_point start = high_resolution_clock::now();
@@ -326,26 +311,21 @@ int main(){
   cout << "###         Question 2, Part 2         ###" << endl;
   cout << "### Naive vs. Blocked (Block_size = 8) ###" << endl;
   cout << "##########################################" << endl;
-  for(int p = 4; p < 11; p++){
+  for(int k = 4; k < 11; k++){
     cout << endl;
-    int n = pow(2,p);
+    int n = pow(2,k);
     cout << "----- Matrix size n = " << n << " -----" << endl;
   
     double * A = new double[n * n];
     double * B = new double[n * n];
     double * C = new double[n * n];
 
-    for(int i = 0; i < n*n; i++){
-      A[i] = 0.0;
-      B[i] = 0.0;
-      C[i] = 0.0;
-    }
-
     // make A, B = I
     for (int i = 0; i < n; ++i){
       A[i + i * n] = 1.0;
       B[i + i * n] = 1.0;
     }
+      
     
     // Measure performance
     high_resolution_clock::time_point start = high_resolution_clock::now();
@@ -403,8 +383,8 @@ int main(){
   cout << "##########################" << endl;
   cout << endl;
 
-  for(int p = 1; p < 11; p++){
-    int n = pow(2,p);
+  for(int h = 1; h < 11; h++){
+    int n = pow(2,h);
   
     double * A = new double[n * n];
     double * B = new double[n * n];
@@ -425,7 +405,7 @@ int main(){
 	      0, n, 0, n,
 	      0, n, 0, n,
 	      0, n, 0, n, n, n);
-
+    
     bool equal = check_equal(C,A,B,n);
     if(equal)
       cout << "Matrix C, size n = " << n << ", is equal to I" << endl;

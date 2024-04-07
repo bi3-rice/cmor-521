@@ -217,68 +217,12 @@ int main(){
   
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Request send_req;
-
-  /*
-  if(rank == 1){
-    MPI_Isend(sub_C12, sub_n*sub_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &send_req);
-  }
-  if(rank == 2){
-    MPI_Isend(sub_C21, sub_n*sub_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &send_req);
-  }
-  if(rank == 3){
-    MPI_Isend(sub_C22, sub_n*sub_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &send_req);
-  }
-  if(rank == 0){
-    MPI_Irecv(sub_C12, sub_n*sub_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &send_req);
-    MPI_Irecv(sub_C21, sub_n*sub_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &send_req);
-    MPI_Irecv(sub_C22, sub_n*sub_n, MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &send_req);
-
-    double * C = new double[n*n];
-    
-    for(int i = 0; i < sub_n; i++){
-      for(int j = 0; j < sub_n; j++){
-	C[j + i * n] = sub_C11[j + i * sub_n];
-	C[(j+sub_n) + i * n] = sub_C12[j + i * sub_n];
-	C[j + (i+sub_n) * n] = sub_C21[j + i * sub_n];
-	C[(j+sub_n) + (i+sub_n) * n] = sub_C22[j + i * sub_n];
-      }
-    }
-
-    cout << "Matrix C" << endl;
-    for(int i = 0; i < n; i++){
-      cout << "[";
-      for(int j = 0; j < n; j++){
-	cout << C[j + i * n] << ", ";
-      }
-      cout << "]" << endl;
-    }
-
-    delete[] C;
-  }
-  */
-
-  /*
-  for(int id = 0; id < p*p; id++){
-    if(rank == id){
-      cout << "Rank = " << id << endl;
-      cout << "Submatrix C" << endl;
-      
-      for(int i = 0; i < sub_n; i++){
-	cout << "[";
-	for(int j = 0; j < sub_n; j++){
-	  cout << sub_C[j + i * n] << ", ";
-	}
-	cout << "]" << endl;
-      }
-    }
-    MPI_Barrier(MPI_COMM_WORLD);
-  }
-  */
   
   delete[] first_sub_A;
   delete[] first_sub_B;
   delete[] second_sub_A;
   delete[] second_sub_B;
+  delete[] sub_C;
   
   MPI_Finalize();
 

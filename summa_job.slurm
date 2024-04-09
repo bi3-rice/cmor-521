@@ -1,14 +1,11 @@
-#!/bin/bash
-#SBATCH --job-name=Summa
-#SBATCH --account=commons
-#SBATCH --partition=commons
-#SBATCH --ntasks=4
-#SBATCH --mem-per-cpu=1G
+#!/bin/bash 
+#SBATCH --job-name=CMOR-421-521
+#SBATCH --partition=scavenge
+#SBATCH --ntasks=4 
+#SBATCH --mem-per-cpu=1G 
 #SBATCH --time=00:30:00 
-#SBATCH --mail-user=bi3@rice.edu 
-#SBATCH --mail-type=ALL   
-echo "My job ran on:" echo $SLURM_NODELIST
-if [[ -d $SHARED_SCRATCH/$USER && -w $SHARED_SCRATCH/$USER ]]; then
-    cd $SHARED_SCRATCH/$USER
-    srun /home/bi3/summa.cpp
-fi
+
+echo "My job ran on:" 
+echo $SLURM_NODELIST 
+
+srun -n 4 ./summa.cpp

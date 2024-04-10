@@ -226,12 +226,14 @@ int main(int argc, char* argv[]){
       cout << "]" << endl;
     }
   }
-  bool equal = check_equal(C, calc_C, n);
-  if(equal){
-    cout << "C and SUMMA C are equal" << endl;
-  }
-  else{
-    cout << "C and SUMMA C are not equal" << endl;
+  if(rank == 0){
+    bool equal = check_equal(C, calc_C, n);
+    if(equal){
+      cout << "C and SUMMA C are equal" << endl;
+    }
+    else{
+      cout << "C and SUMMA C are not equal" << endl;
+    }
   }
   
   delete[] first_sub_A;

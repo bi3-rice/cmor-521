@@ -27,8 +27,10 @@ bool check_equal(double * C1, double * C2, int n){
 }
 
 int main(int argc, char* argv[]){
-  
-  int n = atoi(argv[1]);
+  int n = 128;
+  if(argc > 0){
+    n = atoi(argv[1]);
+  }
   int p;
 
   double * A = new double[n * n];
@@ -51,7 +53,7 @@ int main(int argc, char* argv[]){
   
   matmul(A, B, C, n);
 
-  if(rank == 0){
+  if(rank == 0 && n <= 16){
     cout << "Matrix A" << endl;
     for(int i = 0; i < n; i++){
       cout << "[";
@@ -139,50 +141,6 @@ int main(int argc, char* argv[]){
 
   MPI_Barrier(MPI_COMM_WORLD);
 
-
-  /*
-  for(int id = 0; id < num_procs; id++){
-    if(rank == id){
-      cout << "=================" << endl;
-      cout << "===PROCESSOR " << rank << "===" << endl;
-      cout << "=================" << endl;
-      /*
-      cout << "1st Submatrix A" << endl;
-      
-      for(int i = 0; i < sub_n; i++){
-	cout << "[";
-	for(int j = 0; j < sub_n; j++){
-	  cout << first_sub_A[j + i*sub_n] << ",";
-	}
-	cout << "]" << endl;
-      }
-      
-      cout << "1st Submatrix B" << endl;
-      
-      for(int i = 0; i < sub_n; i++){
-	cout << "[";
-	for(int j = 0; j < sub_n; j++){
-	  cout << first_sub_B[j + i*sub_n] << ",";
-	}
-	cout << "]" << endl;
-      }
-      
-      
-      cout << "Submatrix C" << endl;
-	
-      for(int i = 0; i < sub_n; i++){
-	cout << "[";
-	for(int j = 0; j < sub_n; j++){
-	  cout << sub_C[j + i*sub_n] << ",";
-	}
-	cout << "]" << endl;
-      }
-    }
-    MPI_Barrier(MPI_COMM_WORLD);
-  }
-  */
-  
-
   MPI_Barrier(MPI_COMM_WORLD);
 
   double * calc_C = new double[n * n];
@@ -218,14 +176,15 @@ int main(int argc, char* argv[]){
   MPI_Barrier(MPI_COMM_WORLD);
 
   if(rank == 0){
-    cout << "Calculated C, n = " << n << endl;
-	
-    for(int i = 0; i < n; i++){
-      cout << "[";
-      for(int j = 0; j < n; j++){
-	cout << calc_C[j + i * n] << ",";
+    if(n <= 16){
+      cout << "Calculated C, n = " << n << endl;
+      for(int i = 0; i < n; i++){
+        cout << "[";
+        for(int j = 0; j < n; j++){
+	  cout << calc_C[j + i * n] << ",";
+        }
+        cout << "]" << endl;
       }
-      cout << "]" << endl;
     }
 
     bool equal = check_equal(C, calc_C, n);

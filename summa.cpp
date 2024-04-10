@@ -27,8 +27,10 @@ bool check_equal(double * C1, double * C2, int n){
 }
 
 int main(int argc, char* argv[]){
-  
-  int n = atoi(argv[1]);
+  int n = 128;
+  if(argc > 0)
+    n = atoi(argv[1]);
+
   int p = 2;
 
   double * A = new double[n * n];
@@ -52,7 +54,7 @@ int main(int argc, char* argv[]){
 
   matmul(A, B, C, n);
 
-  if(rank == 0){
+  if(rank == 0 && n <= 64){
     cout << "Matrix A" << endl;
     for(int i = 0; i < n; i++){
       cout << "[";
@@ -213,7 +215,7 @@ int main(int argc, char* argv[]){
 
   MPI_Barrier(MPI_COMM_WORLD);
 
-  if(rank == 0){
+  if(rank == 0 && n <= 64){
     cout << "Calculated C" << endl;
 	
     for(int i = 0; i < n; i++){
@@ -223,14 +225,13 @@ int main(int argc, char* argv[]){
       }
       cout << "]" << endl;
     }
-
-    bool equal = check_equal(C, calc_C, n);
-    if(equal){
-      cout << "C and SUMMA C are equal" << endl;
-    }
-    else{
-      cout << "C and SUMMA C are not equal" << endl;
-    }
+  }
+  bool equal = check_equal(C, calc_C, n);
+  if(equal){
+    cout << "C and SUMMA C are equal" << endl;
+  }
+  else{
+    cout << "C and SUMMA C are not equal" << endl;
   }
   
   delete[] first_sub_A;

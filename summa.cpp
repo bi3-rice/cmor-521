@@ -217,7 +217,6 @@ int main(int argc, char* argv[]){
 
   if(rank == 0 && n <= 64){
     cout << "Calculated C" << endl;
-	
     for(int i = 0; i < n; i++){
       cout << "[";
       for(int j = 0; j < n; j++){

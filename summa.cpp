@@ -37,7 +37,6 @@ int main(int argc, char* argv[]){
   double * B = new double[n * n];
   double * C = new double[n * n];
   
-  
   // since p = 2, the below code assumes 4 processors
   
   MPI_Init(NULL, NULL);

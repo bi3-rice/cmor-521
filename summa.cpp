@@ -54,7 +54,7 @@ int main(int argc, char* argv[]){
 
   matmul(A, B, C, n);
 
-  if(rank == 0 && n <= 64){
+  if(rank == 0 && n <= 16){
     cout << "Matrix A" << endl;
     for(int i = 0; i < n; i++){
       cout << "[";
@@ -215,7 +215,7 @@ int main(int argc, char* argv[]){
 
   MPI_Barrier(MPI_COMM_WORLD);
 
-  if(rank == 0 && n <= 64){
+  if(rank == 0 && n <= 16){
     cout << "Calculated C" << endl;
     for(int i = 0; i < n; i++){
       cout << "[";

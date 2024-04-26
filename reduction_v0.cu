@@ -31,7 +31,7 @@ __global__ void partial_reduction(const int N, float *x_reduced, const float *x)
   */
 
   int s = 1;
-  while(s < BLOCK_SIZE){
+  while(s < blockDim.x){
     if(tid % 2*s == 0){
       s_x[tid] += s_x[tid+s];
     }
